@@ -1,0 +1,14 @@
+/* app/globals.css */
+@import "tailwindcss";
+
+html {
+  scroll-snap-type: y mandatory;
+  overflow-y: scroll;
+  overscroll-behavior: none;
+  height: 100%;
+}
+
+body {
+  overscroll-behavior: none;
+  height: 100%;
+}
