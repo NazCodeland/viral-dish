@@ -1,7 +1,9 @@
 "use client";
 // components/RestaurantPill.tsx
-// Note: opacity stays at 0.01 when hidden (not 0) to keep the
-// backdrop-blur compositor layer alive — same trick as the Svelte version.
+//
+// opacity stays at 0.01 when hidden (not 0) to keep the backdrop-blur
+// compositor layer alive — killing the layer causes a visible snap when
+// it re-composites on reveal.
 
 import { useOverlay } from "@/state/useOverlay";
 
@@ -11,14 +13,16 @@ interface Props {
 }
 
 export default function RestaurantPill({ name, distanceKm }: Props) {
-  const { visible } = useOverlay();
+  // effectivelyVisible already accounts for both the reveal timer and any
+  // active force-hide (hold gesture) — no extra logic needed here.
+  const { effectivelyVisible } = useOverlay();
 
   return (
     <div
       className="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 w-fit transition-opacity duration-300"
       style={{
-        opacity: visible ? 1 : 0.01,
-        pointerEvents: visible ? "auto" : "none",
+        opacity: effectivelyVisible ? 1 : 0.01,
+        pointerEvents: effectivelyVisible ? "auto" : "none",
       }}
     >
       <svg

@@ -27,7 +27,9 @@ export default function OrderPanel({
   price,
   onCustomize,
 }: Props) {
-  const { visible } = useOverlay();
+  // effectivelyVisible already accounts for both the reveal timer and any
+  // active force-hide (hold gesture) — no extra logic needed here.
+  const { effectivelyVisible } = useOverlay();
   const [orderState, setOrderState] = useState<OrderState>("idle");
 
   function placeOrder() {
@@ -54,20 +56,23 @@ export default function OrderPanel({
   ].join(" ");
 
   return (
-    <div className="relative z-10 p-4 flex flex-col gap-4">
+    <div className="relative z-20 p-4 flex flex-col gap-4">
       {/*
         RestaurantPill is deliberately OUTSIDE the fading wrapper.
         It uses backdrop-blur — if we fade a parent from opacity 0→1,
         browsers disable blur until opacity hits 1, causing a visible snap.
         The Pill handles its own fade internally (0.01 min opacity) to keep
-        the GPU blur layer alive. Same architecture as the Svelte version.
+        the GPU blur layer alive.
       */}
       <RestaurantPill name={restaurantName} distanceKm={distanceKm} />
 
       {/* Standard content fade — no backdrop-filter here so 0→1 is fine */}
       <div
         className="flex flex-col gap-4 transition-opacity duration-300"
-        style={{ opacity: visible ? 1 : 0 }}
+        style={{
+          opacity: effectivelyVisible ? 1 : 0,
+          pointerEvents: effectivelyVisible ? "auto" : "none",
+        }}
       >
         {/* Dish title */}
         <h1
