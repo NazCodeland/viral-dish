@@ -1,27 +1,38 @@
 "use client";
 // components/FoodCard.tsx
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import type { Dish } from "@/app/types";
 import { OverlayProvider, useOverlay } from "@/state/useOverlay";
 import CreatorHeader from "./CreatorHeader";
-import MenuButton from "./MenuButton";
 import OrderPanel from "./OrderPanel";
 import SocialRail from "./SocialRail";
-import AppMenu from "./AppMenu";
 
 interface Props {
   dish: Dish;
   onComment?: () => void;
   onCreator?: () => void;
   onCustomize?: () => void;
+  onOverlayChange?: (visible: boolean) => void;
 }
 
-function FoodCardInner({ dish, onComment, onCreator, onCustomize }: Props) {
+function FoodCardInner({
+  dish,
+  onComment,
+  onCreator,
+  onCustomize,
+  onOverlayChange,
+}: Props) {
   const { visible, triggerReveal, hide } = useOverlay();
   const containerRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Sync the local visible state up to the global page state
+  useEffect(() => {
+    if (onOverlayChange) {
+      onOverlayChange(visible);
+    }
+  }, [visible, onOverlayChange]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -29,7 +40,8 @@ function FoodCardInner({ dish, onComment, onCreator, onCustomize }: Props) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.intersectionRatio >= 0.6) {
+        // Updated to 0.90 threshold
+        if (entry.intersectionRatio >= 0.9) {
           triggerReveal();
           videoRef.current?.play().catch(() => {});
         } else {
@@ -40,7 +52,7 @@ function FoodCardInner({ dish, onComment, onCreator, onCustomize }: Props) {
           }
         }
       },
-      { root: null, threshold: [0, 0.6] },
+      { root: null, threshold: [0, 0.9] }, // Updated to 0.90
     );
 
     observer.observe(container);
@@ -90,13 +102,6 @@ function FoodCardInner({ dish, onComment, onCreator, onCustomize }: Props) {
         className="transition-opacity duration-300"
         style={overlayTransition}
       >
-        <MenuButton onClick={() => setMenuOpen(true)} />
-      </div>
-
-      <div
-        className="transition-opacity duration-300"
-        style={overlayTransition}
-      >
         <SocialRail
           likes={dish.stats.likes}
           saves={dish.stats.saves}
@@ -116,8 +121,6 @@ function FoodCardInner({ dish, onComment, onCreator, onCustomize }: Props) {
           onCustomize={onCustomize}
         />
       </div>
-
-      <AppMenu open={menuOpen} onOpenChange={setMenuOpen} />
     </div>
   );
 }
