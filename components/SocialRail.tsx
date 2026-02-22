@@ -35,7 +35,7 @@ export default function SocialRail({ likes, saves }: Props) {
   }
 
   return (
-    <div className="absolute right-2 bottom-40 -translate-y-1/2 z-20 flex flex-col gap-4">
+    <div className="absolute right-2 bottom-44 -translate-y-1/2 z-20 flex flex-col gap-4">
       {/* Like */}
       <button
         onClick={toggleLike}
