@@ -26,7 +26,6 @@ interface Props {
 
 function FoodCardInner({
   dish,
-  onComment,
   onCreator,
   onCustomize,
   onOverlayChange,
@@ -141,7 +140,6 @@ function FoodCardInner({
           likes={dish.stats.likes}
           saves={dish.stats.saves}
           comments={dish.stats.comments}
-          onComment={onComment}
         />
       </div>
 

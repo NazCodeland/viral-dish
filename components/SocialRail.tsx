@@ -7,7 +7,6 @@ interface Props {
   likes: number;
   saves: number;
   comments: number;
-  onComment?: () => void;
 }
 
 function formatCount(n: number): string {
@@ -17,12 +16,7 @@ function formatCount(n: number): string {
   return String(n);
 }
 
-export default function SocialRail({
-  likes,
-  saves,
-  comments,
-  onComment,
-}: Props) {
+export default function SocialRail({ likes, saves }: Props) {
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [likeDelta, setLikeDelta] = useState(0);
@@ -86,7 +80,7 @@ export default function SocialRail({
       >
         {isBookmarked ? (
           <svg
-            width="20"
+            width="22"
             height="22"
             viewBox="0 0 24 24"
             fill="#FFD700"
@@ -97,7 +91,7 @@ export default function SocialRail({
           </svg>
         ) : (
           <svg
-            width="20"
+            width="22"
             height="22"
             viewBox="0 0 24 24"
             fill="none"
@@ -112,26 +106,26 @@ export default function SocialRail({
         </span>
       </button>
 
-      {/* Comments */}
+      {/* Share */}
       <button
-        onClick={onComment}
-        aria-label="Comments"
+        onClick={() => {}}
+        aria-label="Share"
         className="flex flex-col items-center gap-1 bg-transparent border-none cursor-pointer transition-transform active:scale-[0.85]"
       >
         <svg
-          width="22"
-          height="22"
-          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
           fill="none"
           stroke="white"
-          strokeWidth="2"
-          strokeLinecap="round"
+          strokeWidth="1.5"
           strokeLinejoin="round"
+          width="22"
+          height="22"
         >
-          <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          <path d="M10.938 3.175a.674.674 0 0 1 1.138-.488l6.526 6.215c.574.547.554 1.47-.043 1.991l-6.505 5.676a.674.674 0 0 1-1.116-.508V13.49s-6.985-1.258-9.225 2.854c-.209.384-1.023.518-.857-1.395.692-3.52 2.106-9.017 10.082-9.017z" />
         </svg>
         <span className="text-[11px] font-semibold text-white [text-shadow:0_1px_3px_rgba(0,0,0,0.5)]">
-          {formatCount(comments)}
+          Share
         </span>
       </button>
     </div>
