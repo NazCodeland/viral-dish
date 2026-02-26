@@ -3,10 +3,9 @@
 
 interface Props {
   name: string;
-  distanceKm: number;
 }
 
-export default function RestaurantPill({ name, distanceKm }: Props) {
+export default function RestaurantPill({ name }: Props) {
   return (
     <div className="flex items-start gap-1.5 text-white/70">
       <svg
@@ -24,7 +23,7 @@ export default function RestaurantPill({ name, distanceKm }: Props) {
         <polyline points="9,22 9,12 15,12 15,22" />
       </svg>
       <span className="text-sm font-medium leading-snug line-clamp-2">
-        Made by {name} ({distanceKm}km)
+        Made by {name}
       </span>
     </div>
   );

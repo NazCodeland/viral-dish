@@ -6,8 +6,6 @@ export interface Creator {
 
 export interface Restaurant {
   name: string;
-  distanceKm: number;
-  arrivalTime: string;
   arrivalMinutes: number;
 }
 

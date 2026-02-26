@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 import ConvexClientProvider from "@/components/ConvexClientProvider";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -11,7 +12,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ViralPlate",
+  title: "ViralDish",
   description: "Order viral food dishes delivered to your door",
   icons: {
     icon: "/favicon.png",
@@ -30,6 +31,7 @@ export default function RootLayout({
           className={`${inter.variable} antialiased select-none bg-background text-foreground`}
         >
           <ConvexClientProvider>{children}</ConvexClientProvider>
+          <Toaster position="top-center" richColors />
         </body>
       </html>
     </ConvexAuthNextjsServerProvider>

@@ -1,5 +1,5 @@
 {
-  "name": "viralplate",
+  "name": "viral-dish",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -18,9 +18,11 @@
     "convex": "^1.31.7",
     "lucide-react": "^0.575.0",
     "next": "16.1.6",
+    "next-themes": "^0.4.6",
     "radix-ui": "^1.4.3",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
+    "sonner": "^2.0.7",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

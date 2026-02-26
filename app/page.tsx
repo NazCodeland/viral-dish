@@ -8,12 +8,18 @@ import FoodCard from "@/components/FoodCard";
 import VideoCardSkeleton from "@/components/VideoCardSkeleton";
 import MenuButton from "@/components/MenuButton";
 import AppMenu from "@/components/AppMenu";
+import OnboardingModal from "@/components/OnboardingModal";
 
 export default function FeedPage() {
   const feed = useQuery(api.videos.getFeed, {});
   const [menuOpen, setMenuOpen] = useState(false);
-
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+
+  // Shared across all cards — once the user grants location once, every card knows.
+  const [isLocationShared, setIsLocationShared] = useState(false);
+
+  // Onboarding modal — shown on every visit for now, localStorage tracking added later.
+  const [showOnboarding, setShowOnboarding] = useState(true);
 
   function openComments() {
     alert("Comments — coming soon");
@@ -31,6 +37,10 @@ export default function FeedPage() {
 
   return (
     <>
+      {showOnboarding && (
+        <OnboardingModal onDismiss={() => setShowOnboarding(false)} />
+      )}
+
       <MenuButton visible={isMenuVisible} onClick={() => setMenuOpen(true)} />
       <AppMenu open={menuOpen} onOpenChange={setMenuOpen} />
 
@@ -60,8 +70,6 @@ export default function FeedPage() {
                 },
                 restaurant: {
                   name: video.restaurantName,
-                  distanceKm: video.distanceKm,
-                  arrivalTime: video.arrivalTime,
                   arrivalMinutes: video.arrivalMinutes,
                 },
                 stats: {
@@ -70,6 +78,8 @@ export default function FeedPage() {
                   comments: video.commentsCount ?? 0,
                 },
               }}
+              isLocationShared={isLocationShared}
+              onLocationGranted={() => setIsLocationShared(true)}
               onComment={openComments}
               onCreator={viewCreator}
               onCustomize={openCustomize}

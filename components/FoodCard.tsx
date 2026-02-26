@@ -18,6 +18,8 @@ import SocialRail from "./SocialRail";
 
 interface Props {
   dish: Dish;
+  isLocationShared: boolean;
+  onLocationGranted: () => void;
   onComment?: () => void;
   onCreator?: () => void;
   onCustomize?: () => void;
@@ -26,6 +28,8 @@ interface Props {
 
 function FoodCardInner({
   dish,
+  isLocationShared,
+  onLocationGranted,
   onCreator,
   onCustomize,
   onOverlayChange,
@@ -148,10 +152,10 @@ function FoodCardInner({
         <OrderPanel
           title={dish.title}
           restaurantName={dish.restaurant.name}
-          distanceKm={dish.restaurant.distanceKm}
-          arrivalTime={dish.restaurant.arrivalTime}
           arrivalMinutes={dish.restaurant.arrivalMinutes}
           price={dish.price}
+          isLocationShared={isLocationShared}
+          onLocationGranted={onLocationGranted}
           onCustomize={onCustomize}
         />
       </div>
