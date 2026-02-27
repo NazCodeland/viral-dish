@@ -1,9 +1,5 @@
 "use client";
 // components/CreatorAndSocialRail.tsx
-//
-// Thin wrapper that composes CreatorHeader (as a TikTok-style circular avatar)
-// and SocialRail into a single right-side rail — matching the ReelEats reference.
-// Neither child component is modified.
 
 import CreatorHeader from "./CreatorHeader";
 import SocialRail from "./SocialRail";

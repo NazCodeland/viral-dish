@@ -9,6 +9,7 @@ import VideoCardSkeleton from "@/components/VideoCardSkeleton";
 import MenuButton from "@/components/MenuButton";
 import AppMenu from "@/components/AppMenu";
 import OnboardingModal from "@/components/OnboardingModal";
+import Logo from "@/components/Logo";
 
 export default function FeedPage() {
   const feed = useQuery(api.videos.getFeed, {});
@@ -40,7 +41,7 @@ export default function FeedPage() {
       {showOnboarding && (
         <OnboardingModal onDismiss={() => setShowOnboarding(false)} />
       )}
-
+      <Logo visible={isMenuVisible} />
       <MenuButton visible={isMenuVisible} onClick={() => setMenuOpen(true)} />
       <AppMenu open={menuOpen} onOpenChange={setMenuOpen} />
 

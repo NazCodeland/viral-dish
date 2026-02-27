@@ -17,6 +17,8 @@ interface Props {
   isLocationShared: boolean;
   onLocationGranted: () => void;
   onCustomize?: () => void;
+  description?: string;
+  isTrending?: boolean;
 }
 
 type OrderState = "idle" | "loading" | "placed";
@@ -30,6 +32,8 @@ export default function OrderPanel({
   isLocationShared,
   onLocationGranted,
   onCustomize,
+  description = "The viral sensation. Seasoned smash beef, crispy tortilla, melted cheddar, and our secret homemade mac sauce.",
+  isTrending = true,
 }: Props) {
   const { effectivelyVisible } = useOverlay();
   const [orderState, setOrderState] = useState<OrderState>("idle");
@@ -91,7 +95,8 @@ export default function OrderPanel({
         onDismiss={() => setShowLocationModal(false)}
       />
 
-      <div className="relative z-20 p-4 flex flex-col gap-3 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent pt-12">
+      {/* Added `font-jakarta` here to cascade to the entire text block below */}
+      <div className="relative z-20 p-4 flex flex-col gap-3 w-full bg-linear-to-t from-black/80 via-black/40 to-transparent pt-12 font-jakarta">
         <div
           className="flex flex-col gap-3 transition-opacity duration-300"
           style={{
@@ -99,14 +104,33 @@ export default function OrderPanel({
             pointerEvents: effectivelyVisible ? "auto" : "none",
           }}
         >
+          {/* Row 0: Trending Tag */}
+          {isTrending && (
+            <div className="bg-[#FF4500] text-white text-[10px] font-extrabold uppercase tracking-wider px-2 py-1 rounded w-max shadow-sm">
+              #1 Trending Today
+            </div>
+          )}
+
           {/* Row 1: Dish title */}
           <h1
-            className="text-white font-extrabold leading-[0.95] tracking-tight [text-shadow:0_4px_16px_rgba(0,0,0,0.6)]"
-            style={{ fontSize: "clamp(36px, 10vw, 48px)" }}
+            className="text-white text-3xl font-extrabold leading-tight[text-shadow:0_4px_16px_rgba(0,0,0,0.6)]"
             dangerouslySetInnerHTML={{ __html: title }}
           />
 
-          {/* Row 2: Pills */}
+          {/* Row 2: Dish Description */}
+          {description && (
+            <button
+              onClick={onCustomize}
+              className="text-left w-full cursor-pointer active:opacity-70 transition-opacity"
+              aria-label="Read full description"
+            >
+              <p className="text-[13px] md:text-sm text-gray-300 font-medium line-clamp-1 leading-snug[text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
+                {description}
+              </p>
+            </button>
+          )}
+
+          {/* Row 3: Pills */}
           <div className="flex items-center gap-2.25 flex-wrap">
             <span className="flex items-center gap-1.5 bg-[#FF2D55] rounded-full px-2.25 py-1 text-white text-xs font-bold">
               {formatViews(views)} Orders
@@ -115,7 +139,7 @@ export default function OrderPanel({
               ⭐ {rating.toFixed(1)}
             </span>
 
-            {/* Delivery time pill — dashed until location shared */}
+            {/* Delivery time pill */}
             {isLocationShared ? (
               <span className="flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/10 rounded-full px-2.25 py-1 text-white text-xs font-bold">
                 <Clock className="w-3 h-3" />
@@ -140,7 +164,7 @@ export default function OrderPanel({
             <CustomizeDish onClick={onCustomize} />
           </div>
 
-          {/* Row 3: Order button */}
+          {/* Row 4: Order button */}
           <button
             onClick={handleMainAction}
             disabled={orderState !== "idle"}
