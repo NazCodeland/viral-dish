@@ -11,8 +11,8 @@ interface Props {
   icon?: ReactNode;
   iconPosition?: "left" | "right";
   variant?: Variant;
-  px?: string;
-  textColor?: string;
+  px?: string; // e.g. "px-2" | "px-1.5" — defaults per variant
+  textColor?: string; // e.g. "rgba(10, 30, 120, 1)" — overrides variant default
   onClick?: () => void;
   className?: string;
 }
@@ -28,6 +28,11 @@ export default function Badge({
   onClick,
   className = "",
 }: Props) {
+  // Base classes copied exactly from the working pill spans/buttons
+  // glass: "flex items-center gap-1.5 bg-white/10 backdrop-blur border border-white/10 rounded-full px-2.25 py-1 text-white text-xs font-bold"
+  // outline: same but dashed border + dimmer colors
+  // blue: the trending tag div styles
+
   const defaultPx: Record<Variant, string> = {
     glass: "px-2",
     outline: "px-2",

@@ -19,15 +19,11 @@ export default function Logo({ visible = true }: Props) {
       }}
     >
       <h1
-        className="font-extrabold text-xl tracking-tight drop-shadow-md text-white"
+        className="flex items-center gap-1 font-extrabold text-xl tracking-tight drop-shadow-md text-white"
         style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
-        <FontAwesomeIcon
-          icon={faFire}
-          className="mr-1"
-          style={{ color: "#FF4500" }}
-        />
-        BrandName
+        <FontAwesomeIcon icon={faFire} style={{ color: "#FF4500" }} />
+        TrendBites
       </h1>
     </div>
   );

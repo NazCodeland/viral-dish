@@ -133,8 +133,7 @@ export default function OrderPanel({
             </button>
           )}
 
-          {/* Row 3: Pills — px-2.25 and gap-2.25 preserved exactly from original */}
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-1.5 flex-wrap">
             <Badge
               variant="glass"
               px="px-2.25"
