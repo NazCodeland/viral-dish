@@ -33,16 +33,20 @@ export default function Logo({ hidden = false }: LogoProps) {
 
       <h1
         className="flex items-center gap-1 font-extrabold text-xl tracking-tight"
-        style={{
-          fontFamily: "'Plus Jakarta Sans', sans-serif",
-          color: "var(--color-brand)",
-        }}
+        style={{ fontFamily: "'Plus Jakarta Sans', sans-serif" }}
       >
         <FontAwesomeIcon
           icon={faFire}
           className="[&_path]:fill-[url(#fire-gradient)]"
         />
-        TrendBites
+        <span
+          style={{
+            color: "white",
+            textShadow: "0 1px 3px rgba(0,0,0,0.3)",
+          }}
+        >
+          TrendBites
+        </span>
       </h1>
     </div>
   );
