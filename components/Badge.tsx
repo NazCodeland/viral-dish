@@ -56,10 +56,9 @@ export default function Badge({
   } else if (variant === "blue") {
     variantClasses = `text-[10px] font-extrabold uppercase tracking-wider ${resolvedPx} py-1 rounded-md w-max`;
     variantStyle = {
-      background: "rgba(30, 80, 255, 0.35)",
-      border: "1px solid rgba(80, 160, 255, 0.28)",
-      color: "rgba(120, 195, 255, 0.95)",
-      textShadow: "0 0 10px rgba(80, 160, 255, 0.55)",
+      background: "rgba(15, 50, 180, 0.85)",
+      border: "1px solid rgba(100, 160, 255, 0.4)",
+      color: "#ffffff",
     };
   }
 
