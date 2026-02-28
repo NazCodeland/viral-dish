@@ -122,7 +122,7 @@ export default function OrderPanel({
                 className="text-left w-full cursor-pointer active:opacity-70 transition-opacity"
                 aria-label="Read full description"
               >
-                <p className="text-[13px] md:text-sm text-gray-300 font-medium line-clamp-1 leading-snug [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
+                <p className="text-[13px] md:text-sm text-gray-300 font-medium line-clamp-2 leading-snug [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
                   {description}
                 </p>
               </button>
