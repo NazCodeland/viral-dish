@@ -7,7 +7,7 @@ import LocationModal from "./LocationModal";
 import CustomizeDish from "./CustomizeDish";
 import Badge from "./Badge";
 import { requestGeolocation } from "@/utils/geolocation";
-import { Clock } from "lucide-react";
+import { Clock, MoveRight } from "lucide-react";
 
 interface Props {
   title: string;
@@ -76,9 +76,10 @@ export default function OrderPanel({
     return String(n);
   }
 
+  // UPDATED: Changed to font-extrabold and tracking-normal for a cleaner, punchier button
   const buttonClass = [
     "w-full h-14 rounded-2xl flex items-center justify-between px-5",
-    "text-lg font-bold tracking-[0.1px] transition-all duration-200",
+    "text-lg font-extrabold tracking-normal transition-all duration-200",
     "active:scale-[0.98] disabled:cursor-default",
     orderState === "placed"
       ? "bg-white text-gray-900 shadow-[0_1px_3px_rgba(0,0,0,0.3),0_4px_8px_rgba(0,0,0,0.15)]"
@@ -116,7 +117,7 @@ export default function OrderPanel({
 
           {/* Row 1: Dish title */}
           <h1
-            className="text-white text-3xl font-extrabold leading-tight [text-shadow:0_4px_16px_rgba(0,0,0,0.6)]"
+            className="text-white text-3xl font-extrabold leading-tight[text-shadow:0_4px_16px_rgba(0,0,0,0.6)]"
             dangerouslySetInnerHTML={{ __html: title }}
           />
 
@@ -127,12 +128,13 @@ export default function OrderPanel({
               className="text-left w-full cursor-pointer active:opacity-70 transition-opacity"
               aria-label="Read full description"
             >
-              <p className="text-[13px] md:text-sm text-gray-300 font-medium line-clamp-1 leading-snug [text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
+              <p className="text-[13px] md:text-sm text-gray-300 font-medium line-clamp-1 leading-snug[text-shadow:0_1px_3px_rgba(0,0,0,0.8)]">
                 {description}
               </p>
             </button>
           )}
 
+          {/* Row 3: Pills (Make sure your Badge component uses font-bold, not extrabold/black!) */}
           <div className="flex items-center gap-1.5 flex-wrap">
             <Badge
               variant="glass"
@@ -182,7 +184,8 @@ export default function OrderPanel({
               <>
                 <span>Order This Dish</span>
                 <span className="flex items-center gap-2 opacity-90 font-black">
-                  {formattedPrice} <span>→</span>
+                  {formattedPrice}
+                  <MoveRight className="w-5 h-5" />
                 </span>
               </>
             )}
