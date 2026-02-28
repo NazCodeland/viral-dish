@@ -15,6 +15,7 @@ interface Props {
   onCreator?: () => void;
   onCustomize?: () => void;
   onOverlayChange?: (visible: boolean) => void;
+  onHoldChange?: (holding: boolean) => void;
 }
 
 function FoodCardInner({
@@ -145,7 +146,7 @@ function FoodCardInner({
 
 export default function FoodCard(props: Props) {
   return (
-    <OverlayProvider>
+    <OverlayProvider onHoldChange={props.onHoldChange}>
       <FoodCardInner {...props} />
     </OverlayProvider>
   );

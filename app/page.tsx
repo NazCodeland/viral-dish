@@ -17,6 +17,8 @@ export default function FeedPage() {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isLocationShared, setIsLocationShared] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(true);
+  // Tracks whether the user is holding — hides logo + menu button
+  const [isHolding, setIsHolding] = useState(false);
 
   function openComments() {
     alert("Comments — coming soon");
@@ -37,8 +39,12 @@ export default function FeedPage() {
       {showOnboarding && (
         <OnboardingModal onDismiss={() => setShowOnboarding(false)} />
       )}
-      <Logo />
-      <MenuButton visible={isMenuVisible} onClick={() => setMenuOpen(true)} />
+
+      <Logo hidden={isHolding} />
+      <MenuButton
+        visible={isMenuVisible && !isHolding}
+        onClick={() => setMenuOpen(true)}
+      />
       <AppMenu open={menuOpen} onOpenChange={setMenuOpen} />
 
       <div
@@ -77,6 +83,7 @@ export default function FeedPage() {
               onCreator={viewCreator}
               onCustomize={openCustomize}
               onOverlayChange={setIsMenuVisible}
+              onHoldChange={setIsHolding}
             />
           </div>
         ))}

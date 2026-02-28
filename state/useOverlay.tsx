@@ -1,16 +1,5 @@
 "use client";
 // state/useOverlay.tsx
-//
-// Each FoodCard creates its own OverlayProvider so cards are fully independent.
-//
-// effectivelyVisible: single source of truth for all consumers.
-// False whenever the overlay hasn't revealed yet OR the user is force-hiding.
-//
-// useHoldToHide: returns pointer event props to spread onto the FoodCard root.
-// Uses event delegation — filters interactive elements via e.target.closest().
-// Swipe detection via onPointerMove cancels hold if finger moves > 10px.
-// holdTimerRef is nulled inside the callback so onPointerMove correctly
-// distinguishes "timer still pending" from "timer already fired".
 
 import {
   createContext,
@@ -36,14 +25,21 @@ interface OverlayState {
 
 const OverlayContext = createContext<OverlayState | null>(null);
 
-export function OverlayProvider({ children }: { children: React.ReactNode }) {
+interface OverlayProviderProps {
+  children: React.ReactNode;
+  /** Called with true when hold starts, false when it ends */
+  onHoldChange?: (holding: boolean) => void;
+}
+
+export function OverlayProvider({
+  children,
+  onHoldChange,
+}: OverlayProviderProps) {
   const [visible, setVisible] = useState(false);
   const [forceHidden, setForceHidden] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const triggerReveal = useCallback(() => {
-    // Reset forceHidden when a card comes back into view — clears any
-    // stuck forceHidden state from a previous gesture.
     setForceHidden(false);
     setVisible(false);
     if (timerRef.current) clearTimeout(timerRef.current);
@@ -62,8 +58,15 @@ export function OverlayProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const forceHide = useCallback(() => setForceHidden(true), []);
-  const cancelForceHide = useCallback(() => setForceHidden(false), []);
+  const forceHide = useCallback(() => {
+    setForceHidden(true);
+    onHoldChange?.(true);
+  }, [onHoldChange]);
+
+  const cancelForceHide = useCallback(() => {
+    setForceHidden(false);
+    onHoldChange?.(false);
+  }, [onHoldChange]);
 
   const effectivelyVisible = visible && !forceHidden;
 
@@ -114,8 +117,6 @@ export function useHoldToHide({ onTap }: UseHoldToHideOptions = {}) {
       startPosRef.current = { x: e.clientX, y: e.clientY };
 
       holdTimerRef.current = setTimeout(() => {
-        // Null the ref immediately so onPointerMove can correctly detect
-        // that the timer has already fired vs still pending.
         holdTimerRef.current = null;
         didHoldRef.current = true;
         forceHide();
@@ -126,15 +127,11 @@ export function useHoldToHide({ onTap }: UseHoldToHideOptions = {}) {
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent) => {
-      // Timer already fired (ref is null) — hold is committed, didHoldRef
-      // is true. onPointerUp/onPointerCancel will call cancelForceHide().
       if (!holdTimerRef.current) return;
 
       const dx = Math.abs(e.clientX - startPosRef.current.x);
       const dy = Math.abs(e.clientY - startPosRef.current.y);
 
-      // Timer still pending and user moved > 10px — swiping, not holding.
-      // Cancel before the timer fires so UI never hides mid-scroll.
       if (dx > SWIPE_THRESHOLD_PX || dy > SWIPE_THRESHOLD_PX) {
         clearTimer();
         didHoldRef.current = false;
@@ -161,7 +158,6 @@ export function useHoldToHide({ onTap }: UseHoldToHideOptions = {}) {
   );
 
   const onPointerCancel = useCallback(() => {
-    // Browser took over the gesture (e.g. native scroll). Clean up.
     clearTimer();
     if (didHoldRef.current) {
       cancelForceHide();
